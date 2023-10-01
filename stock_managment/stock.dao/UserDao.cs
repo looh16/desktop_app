@@ -145,5 +145,35 @@ namespace stock_managment.stock.dao
             }
         }
         #endregion
+
+        #region Pesquisar Utilizador Por Nome
+        public DataTable Search_by_name(string name)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                string sql = "SELECT * FROM user where name like @name";
+
+                MySqlCommand mySqlCommand = new MySqlCommand(sql, _connection);
+                // Set the parameters for your SQL command.
+                mySqlCommand.Parameters.AddWithValue("@name", name);
+                _connection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                MySqlDataAdapter mySqlData = new MySqlDataAdapter(mySqlCommand);
+                mySqlData.Fill(dt);
+                _connection.Clone();
+                _connection.Dispose();
+                _connection.ClearAllPoolsAsync();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show("Erro ao executar a pesquisa: " + ex.Message);
+                return null;
+            }
+        }
+        #endregion
     }
 }

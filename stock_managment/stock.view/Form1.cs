@@ -98,11 +98,9 @@ namespace stock_managment
                 this.clear_fields();
                 this.desable_fields();
 
-                Grid.DataSource = userDao.GetAll();
-
-                tabUsuario.SelectedTab = tabPage2;
+                Grid.Rows.Remove(Grid.CurrentRow);
             }
-           
+            tabUsuario.SelectedTab = tabPage2;
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -178,7 +176,7 @@ namespace stock_managment
 
         }
 
-        private void Grid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void Grid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             selecteId = Grid.CurrentRow.Cells[0].Value.ToString();
             txtName.Text = Grid.CurrentRow.Cells[1].Value.ToString();
@@ -190,6 +188,13 @@ namespace stock_managment
             tabUsuario.SelectedTab = tabPage1;
             this.enable_fields();
             btnSalvar.Enabled = false;
+        }
+
+        private void textPesquisar_TextChanged(object sender, EventArgs e)
+        {
+            string name = "%" +txtPesquisar.Text+ "%";
+            UserDao userDao = new UserDao();
+            Grid.DataSource = userDao.Search_by_name(name);
         }
     }
 }
